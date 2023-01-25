@@ -5,17 +5,18 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 
-import br.com.mvalentim.mvc.mudi.model.Pedidos;
+import br.com.mvalentim.mvc.mudi.model.Pedido;
+import br.com.mvalentim.mvc.mudi.model.StatusPedido;
 
 public class NovoPedidoDTO {
 
 	@NotBlank
 	private String nomeProduto;
-	
+
 	private BigDecimal valorNegociado;
-	
+
 	private LocalDate dataDaEntrega;
-	
+
 	@NotBlank
 	private String urlProduto;
 	@NotBlank
@@ -23,12 +24,15 @@ public class NovoPedidoDTO {
 	@NotBlank
 	private String descricao;
 
-	public Pedidos toPedido() {
-		Pedidos pedidos = new Pedidos();
+	private StatusPedido status;
+
+	public Pedido toPedido() {
+		Pedido pedidos = new Pedido();
 		pedidos.setNomeProduto(nomeProduto);
 		pedidos.setUrlProduto(urlProduto);
 		pedidos.setUrlImagem(urlImagem);
 		pedidos.setDescricao(descricao);
+		pedidos.setStatus(StatusPedido.AGUARDANDO);
 		return pedidos;
 	}
 
@@ -79,6 +83,13 @@ public class NovoPedidoDTO {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	
+
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
+	}
+
 }

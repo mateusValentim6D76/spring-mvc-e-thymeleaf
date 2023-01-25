@@ -5,30 +5,39 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.mvalentim.mvc.mudi.model.Pedidos;
+import br.com.mvalentim.mvc.mudi.model.Pedido;
+import br.com.mvalentim.mvc.mudi.model.StatusPedido;
 import br.com.mvalentim.mvc.mudi.repository.PedidosRepository;
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
 
 	@Autowired
 	private PedidosRepository pedidosRepository;
 
-//	@GetMapping("/home")
-//	public String home(Model model) {
-//		List<Pedidos> pedidos = pedidosRepository.recuperaTodosOsPedidos();
-//		model.addAttribute("pedidos", pedidos);
-//		return "home";
-//	}
-
-	@GetMapping("/home")
-	public ModelAndView home(Model model) {
-		ModelAndView mv = new ModelAndView("home");
-		List<Pedidos> pedidos = pedidosRepository.findAll();
+	@GetMapping
+	public String home(Model model) {
+		List<Pedido> pedidos = pedidosRepository.findAll();
 		model.addAttribute("pedidos", pedidos);
-		return mv;
+		return "home";
 	}
+	
+	@GetMapping("/{status}")
+	public String byStatus(@PathVariable("status") String status, Model model) {
+		List<Pedido> pedido = pedidosRepository.findByStatus(StatusPedido.valueOf(status.toUpperCase()));
+		model.addAttribute("pedidos", pedido);
+		model.addAttribute("status", status);
+		return "home";
+	}
+	@ExceptionHandler(IllegalArgumentException.class)
+	public String onError() {
+		return "redirect:/home";
+	}
+	
 }

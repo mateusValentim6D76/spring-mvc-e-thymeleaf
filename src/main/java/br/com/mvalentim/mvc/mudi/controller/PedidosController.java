@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.mvalentim.mvc.mudi.dto.NovoPedidoDTO;
-import br.com.mvalentim.mvc.mudi.model.Pedidos;
+import br.com.mvalentim.mvc.mudi.model.Pedido;
 import br.com.mvalentim.mvc.mudi.repository.PedidosRepository;
 
 @Controller
@@ -33,8 +33,8 @@ public class PedidosController {
 			return "pedido/formulario";
 		}
 		
-		Pedidos pedido = novoPedidoDTO.toPedido();
+		Pedido pedido = novoPedidoDTO.toPedido();
 		pedidoRepository.save(pedido);
-		return "pedido/formulario";
+		return "redirect:/home";
 	}
 }
